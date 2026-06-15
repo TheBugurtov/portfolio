@@ -1,0 +1,922 @@
+/* =========================================
+   1. CORE & RESET (Premium Foundation)
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oranienbaum&display=swap');
+
+:root {
+    --bg-root: #050505;       
+    --text-primary: #F5F5F7;  
+    --text-secondary: #86868b; 
+    --accent: #ffffff;
+    --grid-gap: 24px;
+    --container-width: 1200px;
+    --easing: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background-color: var(--bg-root);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.3s ease;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+/* =========================================
+   2. LAYOUT UTILITIES
+   ========================================= */
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 40px;
+    width: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: var(--bg-root);
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+/* =========================================
+   3. HEADER (Minimalist Bar)
+   ========================================= */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.logo svg {
+    width: 32px;
+    height: auto;
+    fill: var(--text-primary);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.location, .weather-info {
+    display: flex;
+    gap: 8px;
+}
+
+.lang-switcher {
+    display: flex;
+    gap: 12px;
+}
+
+.lang-btn {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.lang-btn.active {
+    opacity: 1;
+}
+
+.lang-btn[data-lang="en"] { background-image: url('flags/en.svg'); }
+.lang-btn[data-lang="ru"] { background-image: url('flags/ru.svg'); }
+.lang-btn[data-lang="tribe"] { background-image: url('flags/tribe.svg'); }
+
+/* =========================================
+   4. HERO SECTION
+   ========================================= */
+.hero {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 80px;
+    padding-top: 120px;
+    overflow: clip;
+    z-index: 1;
+}
+
+.hero-image {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('image.png');
+    background-position: right center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    will-change: transform;
+    transition: filter 0.2s linear;
+    filter: brightness(calc(1 - var(--scroll-darkness, 0) * 0.4));
+    z-index: -1;
+}
+
+.hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(5, 5, 5, calc(0.3 + var(--scroll-darkness, 0) * 0.7)) 0%,
+        rgba(5, 5, 5, calc(0.4 + var(--scroll-darkness, 0) * 0.7)) 50%,
+        rgba(5, 5, 5, calc(0.9 + var(--scroll-darkness, 0) * 0.8)) 90%,
+        rgba(5, 5, 5, calc(1 + var(--scroll-darkness, 0) * 0.9)) 100%
+    );
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--grid-gap);
+    align-items: end;
+    width: 100%;
+}
+
+.experience-section,
+.plugins-section,
+.projects, 
+.about,
+.footer {
+    position: relative;
+    z-index: 2;
+}
+
+.main-title {
+    grid-column: 1 / -1;
+    font-family: 'Oranienbaum', serif;
+    font-size: clamp(60px, 11vw, 180px);
+    line-height: 0.9;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+    letter-spacing: -0.03em;
+}
+
+.info-card {
+    grid-column: 1 / 6;
+}
+
+.info-text {
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 300;
+    color: var(--text-primary);
+    max-width: 480px;
+    margin-top: 24px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.social-links-top {
+    grid-column: 8 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    align-self: end;
+    gap: 12px;
+}
+
+/* =========================================
+   5. EXPERIENCE
+   ========================================= */
+.experience-section {
+    padding: 120px 0;
+}
+
+.experience-section > .project-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin-bottom: 60px;
+    display: block;
+}
+
+.experience-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px 40px;
+}
+
+.experience-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 24px;
+    transition: transform 0.3s ease;
+}
+
+.experience-item:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,255,255,0.3);
+}
+
+.company {
+    white-space: nowrap;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.role {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.period {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: auto;
+    padding-top: 16px;
+    font-family: 'Inter', monospace;
+}
+
+/* =========================================
+   5b. OWN DEVELOPMENT (FIGMA PLUGINS)
+   ========================================= */
+.plugins-section {
+    padding: 80px 0 0;
+}
+
+.plugins-section > .project-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin-bottom: 60px;
+    display: block;
+}
+
+.plugins-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px 40px;
+}
+
+.plugin-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 24px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.plugin-item:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,255,255,0.3);
+    opacity: 1;
+}
+
+.plugin-name {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.plugin-desc {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    flex-grow: 1;
+}
+
+.plugin-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-top: 8px;
+    transition: opacity 0.3s ease;
+}
+
+.plugin-item:hover .plugin-link {
+    opacity: 0.7;
+}
+
+/* =========================================
+   6. PROJECTS
+   ========================================= */
+.projects {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 120px;
+}
+
+.project-item {
+    margin: 0;
+    padding: 80px 0;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin-bottom: 60px;
+}
+
+.project-content {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--grid-gap);
+}
+
+.project-info {
+    grid-column: 1 / 6;
+    display: flex;
+    flex-direction: column;
+    gap: 32px; /* управляем расстояниями явно */
+}
+
+.project-info .project-title {
+    font-family: 'Oranienbaum', serif;
+    font-size: 48px;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-bottom: 24px;
+}
+
+.project-info .project-contribution {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #ccc;
+    margin-bottom: 32px;
+}
+
+.explore-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: fit-content;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.explore-btn span {
+    font-weight: 500;
+}
+
+.explore-btn::after {
+    content: '→';
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.explore-btn:hover {
+    opacity: 1;
+    border-bottom-color: var(--text-primary);
+}
+
+.explore-btn:hover::after {
+    transform: translateX(5px);
+}
+
+.project-details {
+    grid-column: 7 / -1;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.project-description {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 400px;
+    margin-bottom: 40px;
+}
+
+.project-role {
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+    color: var(--text-secondary);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 20px;
+    width: 100%;
+}
+
+.role-name {
+    color: var(--text-primary);
+}
+
+/* =========================================
+   7. ABOUT / FOOTER
+   ========================================= */
+.about {
+    margin-top: 100px;
+    padding-top: 80px;
+}
+
+.about .project-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    display: block;
+}
+
+.about-title {
+    font-family: 'Oranienbaum', serif;
+    font-size: clamp(40px, 8vw, 120px);
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 40px;
+}
+
+.about-description {
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-bottom: 80px;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.contact-info p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.social-links-bottom {
+    display: flex;
+    gap: 32px;
+}
+
+.social-links-bottom a {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    position: relative;
+}
+
+.social-links-bottom a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--text-primary);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.social-links-bottom a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* =========================================
+   8. RESPONSIVE
+   ========================================= */
+@media (max-width: 1024px) {
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+    }
+    
+    .social-links-top {
+        flex-direction: row;
+        gap: 24px;
+        order: 3;
+    }
+    
+    .project-content {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .project-details {
+        border-left: none;
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 24px;
+    }
+    
+    .header {
+        padding: 24px 0;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    
+    .main-title {
+        font-size: 64px;
+        margin-bottom: 20px;
+    }
+    
+    .info-text {
+        font-size: 14px;
+    }
+    
+    .experience-content,
+    .plugins-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+    }
+    
+    .social-links-bottom {
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 64px;
+    }
+    
+    .project-title {
+        font-size: 32px;
+    }
+
+    .hero-image {
+        position: absolute;
+        height: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-links-top {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: flex-start;
+        flex-direction: row;
+        order: 2;
+    }
+    
+    .hero-content {
+        gap: 32px;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+    .hero-image {
+        background-position: 80% center;
+    }
+}
+
+/* =========================================
+   GALLERY THUMBNAILS (4 Squares)
+   ========================================= */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.gallery-thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #1a1a1a;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-thumb:hover {
+    transform: scale(1.05);
+    border-color: rgba(255,255,255,0.3);
+    z-index: 2;
+}
+
+/* =========================================
+   LIGHTBOX (MODAL)
+   ========================================= */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(5, 5, 5, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-content {
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.lightbox-btn {
+    position: absolute;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 40px;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 20px;
+    transition: opacity 0.3s ease;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-btn:hover {
+    opacity: 0.7;
+}
+
+.lightbox-btn.close {
+    top: 20px;
+    right: 20px;
+    font-size: 32px;
+}
+
+.lightbox-btn.prev {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#lightbox-img {
+    user-select: none;
+    -webkit-user-drag: none;
+    cursor: grab;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#lightbox-img:active {
+    cursor: grabbing;
+}
+
+.lightbox-btn.next {
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        gap: 8px;
+    }
+    
+    .lightbox-btn.prev, 
+    .lightbox-btn.next {
+        bottom: 20px;
+        top: auto;
+        transform: none;
+    }
+    .lightbox-btn.prev { left: 30%; }
+    .lightbox-btn.next { right: 30%; }
+}
+
+/* =========================================
+   FIX FOR EXPERIENCE CONTAINER
+   ========================================= */
+section.experience-section.container,
+section.plugins-section.container {
+    display: block;
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+@media (max-width: 768px) {
+    section.experience-section.container,
+    section.plugins-section.container {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+/* Контейнер, который обрезает всё лишнее */
+.lightbox-container {
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Лента с картинками */
+.lightbox-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    height: 100%;
+    width: 100%;
+}
+
+/* Обновленный контейнер слайда */
+.lightbox-slide {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Убираем лишние отступы на мобилках */
+    box-sizing: border-box;
+}
+
+/* Самое важное: чтобы картинка не распирала экран */
+.lightbox-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Картинка всегда вписывается целиком */
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Оптимизация кнопок для мобильных */
+@media (max-width: 768px) {
+    .lightbox-container {
+        height: 90vh; /* Больше места под контент */
+    }
+
+    .lightbox-btn {
+        padding: 15px;
+        background: rgba(0,0,0,0.2); /* Легкий фон, чтобы кнопки не терялись на фото */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Смещаем кнопки вниз, чтобы не мешали просмотру в центре */
+    .lightbox-btn.prev { 
+        left: 10px; 
+        top: auto;
+        bottom: 20px;
+        transform: none;
+    }
+    .lightbox-btn.next { 
+        right: 10px; 
+        top: auto;
+        bottom: 20px; 
+        transform: none;
+    }
+    
+    .lightbox-btn.close {
+        top: 10px;
+        right: 10px;
+        background: none; /* Крестик оставим чистым */
+    }
+}
+
+/* ================================
+   PROJECT METRICS DROPDOWN
+   ================================ */
+
+.metrics-toggle {
+    margin-top: 12px;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.25s var(--easing);
+}
+
+.metrics-toggle:hover {
+    border-bottom-color: var(--text-primary);
+}
+
+/* panel animation */
+.metrics-panel {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.metric-label {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+
+
